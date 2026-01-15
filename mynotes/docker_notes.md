@@ -31,3 +31,36 @@ uv add pandas pyarrow - to install packages
 ```
 
 Why uv ? Extremely fast installs (much faster than pip)
+
+### Docker Image
+
+```
+FROM python:3.13.11-slim
+RUN pip install pandas pyarrow
+WORKDIR /code
+COPY pipeline.py .
+```
+
+After creating the Dockerfile above we ran the code
+```
+docker build -t test:pandas .
+```
+I became confused about which is the image between 'python:3.13.11-slim' and 'test:pandas'
+Is FROM python:3.13.11-slim the image?
+Yes - but not your image.
+
+FROM python:3.13.11-slim means “Start building my image from the existing image named python:3.13.11-slim.”
+```
+Docker Hub
+└── python:3.13.11-slim  ← already exists
+
+Your machine
+└── docker build -t test:pandas .
+    ├── starts from python:3.13.11-slim
+    ├── adds pandas + pyarrow
+    ├── copies piepline.py
+    └── saves image as test:pandas
+```
+
+After building the image we run it:
+```docker run -it --rm test:pandas ```
