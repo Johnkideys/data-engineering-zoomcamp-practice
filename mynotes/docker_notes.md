@@ -64,3 +64,56 @@ Your machine
 
 After building the image we run it:
 ```docker run -it --rm test:pandas ```
+
+Difference between "docker run" and "docker start"
+docker run: Creates a new container from an image AND starts it
+docker start: Starts an existing container that is stopped
+docker ps -a: To check containers 
+docker images -a: To check images
+
+
+To create a docker network so that containers can communicate:
+docker network create pg-network
+
+### Connecting multiple containers to same docker network
+
+running postgres with docker:
+docker run -d --name postgres   -e POSTGRES_USER=root   -e POSTGRES_PASSWORD=root   -e POSTGRES_DB=ny_taxi   -p 5432:5432   postgres:16
+
+running postgres with docker (in the network we created):
+docker run -it --rm --name pg-database  --network=pg-network -e POSTGRES_USER=root   -e POSTGRES_PASSWORD=root   -e POSTGRES_DB=ny_taxi   -p 5432:5432   postgres:16
+
+ --name pg-database: Also chnaged the name for the above, the name is important for other contaioners to reference it on the same network
+--network=pg-network: Added this
+
+ running our ingestion script with docker (in the network we created):
+ docker run -it --rm --network=pg-network taxi_ingest:v001 --pg-host=pg-database
+
+ Important: We chnaged the --pg-host=pg-database (default was localhost which was pointing to the localhost of the taxi_ingest:v001 containers localhost - see slides to visualise)
+
+In another terminal, run pgAdmin on the same network
+```
+docker run -it \
+  -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+  -e PGADMIN_DEFAULT_PASSWORD="root" \
+  -v pgadmin_data:/var/lib/pgadmin \
+  -p 8085:80 \
+  --network=pg-network \
+  --name pgadmin \
+  dpage/pgadmin4
+```
+
+### Running the Above with Docker Compose
+
+created docker-compose.yaml file.
+By default evertyhing run inside the docker-compose.yaml file runs on the same network.
+
+After running docker compose up, the containers have started again from scratch so we need to re-run the ingestion script. We now check ```docker network ls ``` and see pipeline_deafult, which docker compose up automatically created. 
+
+Run the ingestion script in that network:
+
+```
+docker run -it --rm --network=pipeline_default taxi_ingest:v001 --pg-host=pgdatabase
+```
+Dont Forget: --pg-host=pgdatabase has to be passed now so the ingestion script knows which host to go to
+“When running the ingestion container inside a Docker network, I must tell the script to connect to Postgres using the container name, not localhost.”
