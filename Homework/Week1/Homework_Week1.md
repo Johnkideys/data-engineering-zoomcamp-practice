@@ -1,6 +1,20 @@
-# Homework 1: Docker, SQL and Terraform for Data Engineering Zoomcamp 2026
+# Module 1 Homework: Docker & SQL
 
-Below is the sql code to answer questions 3,4,5,6 in Homework 1.
+## My Solution: Question 1
+Below is the command to create the image:
+`% docker run --rm --entrypoint bash python:3.13`
+Checking pip version with:
+Then inside the container we do: `pip --version` and this returns 
+`pip 25.3 from /usr/local/lib/python3.13/site-packages/pip (python 3.13)`
+
+## My Solution: Question 2
+Both of the below would work. Can use the service name or container name as the host. 
+Note that the containers are on the same dopcker network by default as they are created from the docker-compose.yaml file (standard is the service name).
+- db:5432
+- postgres:5432
+If I was connecting to the postgres container via pgadmin desktop(which would be on my local machine) I would then use localhost:5433.
+
+## My Solution: Question 3,4,5,6
 ```
 /*
 3- For the trips in November 2025 (lpep_pickup_datetime between '2025-11-01' 
