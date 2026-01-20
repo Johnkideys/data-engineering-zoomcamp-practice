@@ -84,3 +84,6 @@ AND t2."Zone" = 'East Harlem North'
 ORDER BY g.tip_amount DESC
 LIMIT 1
 ```
+## My Solution: Question 7
+Correct choice:
+terraform init, terraform apply -auto-approve, terraform destroy
