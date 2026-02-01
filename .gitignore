@@ -2,6 +2,9 @@
 taxi_zone_lookup.csv
 
 # GCP credentials
+**/application_default_credentials.json
+**/.config/gcloud/
+
 keys/
 *.json
 .env

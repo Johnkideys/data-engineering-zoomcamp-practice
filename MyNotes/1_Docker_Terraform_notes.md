@@ -1,4 +1,4 @@
-# Docker Notes
+# Docker and Terraform Notes
 
 ### Docker Container and terminal commands
 ```bash
@@ -117,3 +117,31 @@ docker run -it --rm --network=pipeline_default taxi_ingest:v001 --pg-host=pgdata
 ```
 Dont Forget: --pg-host=pgdatabase has to be passed now so the ingestion script knows which host to go to
 “When running the ingestion container inside a Docker network, I must tell the script to connect to Postgres using the container name, not localhost.”
+
+## Terraform Notes
+
+For local development and testing, we use Application Default Credentials (ADC) so the Terraform Google provider can authenticate and make changes to Google Cloud as our user during local development.
+
+We could instead create a service account key and grant it permissions for Terraform to use, but this is less secure and not recommended for local development. ADC is safer because it uses short-lived OAuth tokens and no private keys.
+
+#### Local setup (once per machine)
+I installed the google sdk locally.
+```
+brew install --cask google-cloud-sdk
+gcloud init
+gcloud auth application-default login # For terraform to use
+```
+
+#### Terraform workflow
+
+```
+terraform fmt # to make .tf file code nicer
+terraform init # Download providers & initialise backend
+terraform plan # Show proposed changes
+```
+
+```
+resource "<PROVIDER>_<THING>" "<TERRAFORM_NAME>" {
+  real_cloud_settings_here
+}
+```
