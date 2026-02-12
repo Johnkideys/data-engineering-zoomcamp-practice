@@ -137,6 +137,54 @@ No Points: Write a `SELECT count(*)` query FROM the materialized table you creat
 0 MB, Im not sure why, maybe bec it has cached the result already when creating the table?
 
 
+## BigQuery file
+-- SELECT *
+-- FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi_external`
+-- LIMIT 10;
+
+-- SELECT COUNT(*)
+-- FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi`;
+
+-- Question 2
+-- SELECT COUNT(DISTINCT(PULocationID))
+-- FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi_external`
+
+-- SELECT COUNT(DISTINCT(PULocationID))
+-- FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi`
+
+-- Question 3
+-- below query estimates 155.12 MB 
+-- SELECT PULocationID FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi`
+
+-- Below query estimates 310.24MB
+-- SELECT PULocationID, DOLocationID FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi`
+
+-- Question 4
+-- SELECT count(*)
+-- FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi`
+-- where fare_amount = 0 
+
+-- Question 5
+-- CREATE OR REPLACE TABLE `e-copilot-487215-v4.yellow_taxi.yellow_taxi_optimised`
+-- PARTITION BY DATE(tpep_dropoff_datetime)
+-- CLUSTER BY VendorID AS
+-- SELECT * FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi`
+
+-- Question 6
+-- Non-partitioned table
+-- SELECT COUNT(DISTINCT VendorID)
+-- FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi`
+-- WHERE DATE(tpep_dropoff_datetime) >= '2024-03-01'
+-- AND DATE(tpep_dropoff_datetime) <= '2024-03-15'
+-- Partitioned table
+-- SELECT COUNT(DISTINCT VendorID)
+-- FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi_optimised`
+-- WHERE DATE(tpep_dropoff_datetime) >= '2024-03-01'
+-- AND DATE(tpep_dropoff_datetime) <= '2024-03-15'
+
+-- Question 9
+-- SELECT count(*) FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi`
+
 ## Submitting the solutions
 
 Form for submitting: https://courses.datatalks.club/de-zoomcamp-2026/homework/hw3
