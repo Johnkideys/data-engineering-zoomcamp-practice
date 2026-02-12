@@ -138,6 +138,8 @@ No Points: Write a `SELECT count(*)` query FROM the materialized table you creat
 
 
 ## BigQuery file
+
+```
 -- SELECT *
 -- FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi_external`
 -- LIMIT 10;
@@ -184,6 +186,7 @@ No Points: Write a `SELECT count(*)` query FROM the materialized table you creat
 
 -- Question 9
 -- SELECT count(*) FROM `e-copilot-487215-v4.yellow_taxi.yellow_taxi`
+```
 
 ## Submitting the solutions
 
